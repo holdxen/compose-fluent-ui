@@ -156,7 +156,7 @@ class BuildPlugin : Plugin<Project> {
         val gitTag = providers.exec {
             commandLine("git", "describe", "--abbrev=0", "--tags")
             isIgnoreExitValue = true
-        }.standardOutput.asText.get().trim()
+        }.standardOutput.asText.get().trim().ifEmpty { "v0.1.0" }
 
         val relativeCommitCount = providers.exec {
             commandLine("git", "describe", "--tags")
@@ -165,7 +165,7 @@ class BuildPlugin : Plugin<Project> {
             .removePrefix(gitTag)
             .let {
                 if (it.isNotEmpty()) {
-                    it.split("-")[1].toInt()
+                    it.split("-").getOrNull(1)?.toIntOrNull() ?: 0
                 } else {
                     0
                 }
@@ -182,8 +182,8 @@ class BuildPlugin : Plugin<Project> {
             .substringBefore("-dev")
             .let {
                 val parts = it.split(".")
-                var major = parts.getOrNull(0) ?: "0"
-                var minor = parts.getOrNull(1) ?: "0"
+                var major = parts.getOrNull(0)?.takeIf { it.isNotEmpty() } ?: "1"
+                var minor = parts.getOrNull(1)?.takeIf { it.isNotEmpty() } ?: "0"
                 if (major.startsWith("0")) {
                     major = "1"
                     minor = "0"
