@@ -10,7 +10,9 @@ object BuildConfig {
 
     internal const val snapshotLibraryVersion = "0.1.0-SNAPSHOT"
 
-    val isRelease = System.getenv("PROJECT_BUILD_TYPE") == "release"
+    val isJitPack = System.getenv("JITPACK") == "true"
+
+    val isRelease = System.getenv("PROJECT_BUILD_TYPE") == "release" || isJitPack
 
     var libraryVersion: String = snapshotLibraryVersion
         internal set
