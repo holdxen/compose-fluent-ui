@@ -1,4 +1,4 @@
 jdk:
   - openjdk17
 install:
-  - ./gradlew publishToMavenLocal -x test
+  - ./gradlew :fluent:publishToMavenLocal :fluent-icons-core:publishToMavenLocal :fluent-icons-extended:publishToMavenLocal -x test

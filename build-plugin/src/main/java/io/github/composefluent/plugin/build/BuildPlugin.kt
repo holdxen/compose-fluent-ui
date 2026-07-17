@@ -45,7 +45,9 @@ class BuildPlugin : Plugin<Project> {
 
     private fun MavenPublishBaseExtension.setupMavenPortalPublishing(target: Project) {
         publishToMavenCentral()
-        signAllPublications()
+        if (!BuildConfig.isJitPack) {
+            signAllPublications()
+        }
         coordinates(target.group.toString(), target.name, target.version.toString())
 
         pom {
